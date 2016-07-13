@@ -1,5 +1,8 @@
 package jp.ac.titech.itpro.sdl.locationnotifier;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -28,6 +31,8 @@ public class MainActivity extends AppCompatActivity {
 
     private LayoutInflater inflater;
 
+    private AlarmManager alarmManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,6 +50,8 @@ public class MainActivity extends AppCompatActivity {
             rootLayout.addView(nothingNotice);
 
         inflater = getLayoutInflater();
+
+        alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
     }
 
 
@@ -117,15 +124,31 @@ public class MainActivity extends AppCompatActivity {
 
         int order = getOrder((LinearLayout)v.getParent().getParent());
 
-        fixRow(v,regList.get(order).resetRegister(timeInt[0],timeInt[1],etText),order);
+        Register reg = regList.get(order).resetRegister(timeInt[0],timeInt[1],etText);
+
+        setSchedule(reg,order);
+        fixRow(v,reg,order);
 
     }
 
     public void deleteRow(View v) {
         LinearLayout ll = (LinearLayout)v.getParent().getParent();
-        regList.remove(getOrder(ll));
+        int order = getOrder(ll);
+        regList.remove(order);
         ll.removeAllViews();
         rootLayout.removeView(ll);
+
+        PendingIntent sender = PendingIntent.getBroadcast(MainActivity.this, order,new Intent(MainActivity.this,Notifier.class) , 0);
+        alarmManager.cancel(sender);
+
+        if(order < regList.size()) {
+            for(int i = order;i < regList.size();i++) {
+                setSchedule(regList.get(i),i);
+            }
+            PendingIntent senderBiggest = PendingIntent.getBroadcast(MainActivity.this, regList.size(),new Intent(MainActivity.this,Notifier.class) , 0);
+            alarmManager.cancel(senderBiggest);
+        }
+
     }
 
     public void changeRow(View v) {
@@ -165,5 +188,12 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         return -1;
+    }
+
+    private void setSchedule (Register reg,int order) {
+
+        PendingIntent sender = PendingIntent.getBroadcast(MainActivity.this, order,new Intent(MainActivity.this,Notifier.class).putExtra("mail",reg.mail) , 0);
+
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,reg.nextRegisteredTime(),AlarmManager.INTERVAL_DAY,sender);
     }
 }
