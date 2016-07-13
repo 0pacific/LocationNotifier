@@ -1,17 +1,25 @@
 package jp.ac.titech.itpro.sdl.locationnotifier;
 
+import android.util.Log;
+
 import java.util.Date;
 
-/**
- * Created by admin on 16/07/11.
- */
 public class Register {
 
-    Date date;
+    int h,m;
     String mail;
 
-    public Register (Date date,String mail) {
-        this.date = date;
+    public Register () {
+        this.h = -1;
+        this.m = -1;
+        this.mail = "null";
+    }
+
+    public Register resetRegister(int h,int m,String mail) {
+        this.h = h;
+        this.m = m;
         this.mail = mail;
+        Log.d("Reg","Registered" + h + ":" + m + ":" + mail);
+        return this;
     }
 }
