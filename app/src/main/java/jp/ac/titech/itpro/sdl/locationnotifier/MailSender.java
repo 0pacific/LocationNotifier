@@ -1,7 +1,10 @@
 package jp.ac.titech.itpro.sdl.locationnotifier;
 
+import android.app.Activity;
+import android.location.Location;
 import android.util.Log;
 
+import java.lang.reflect.AccessibleObject;
 import java.util.Properties;
 
 import javax.mail.Message;
@@ -13,7 +16,7 @@ import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
-public class MailSender {
+public class MailSender{
     private Properties properties;
 
     public MailSender(){
@@ -53,8 +56,9 @@ public class MailSender {
             }
 
             message.setSubject("現在の位置情報のお知らせ");
-            message.setText("LocationNotifierより、あなたのスマートフォン、タブレットの現在位置のお知らせです。\n現在の位置は〜〜です。");
+            message.setText("LocationNotifierより、あなたのスマートフォン、タブレットの現在位置のお知らせです。\n現在の位置は" + lat + " : " + lon + "です。");
             Transport.send(message);
+            Log.d("mail","try to send");
         } catch (AddressException e) {
             e.printStackTrace();
         } catch (MessagingException e) {

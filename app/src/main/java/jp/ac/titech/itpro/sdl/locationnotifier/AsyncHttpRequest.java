@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.Toast;
 
 public class AsyncHttpRequest extends AsyncTask<Uri.Builder, Void, String> {
 
