@@ -30,17 +30,18 @@ public class Register implements Serializable{
 
     public long nextRegisteredTime () {
         Calendar cal = Calendar.getInstance();
-        if(cal.get(Calendar.HOUR_OF_DAY) < h || cal.get(Calendar.HOUR_OF_DAY) == h && cal.get(Calendar.MINUTE) < m) {
-            cal.set(Calendar.HOUR_OF_DAY,h);
-            cal.set(Calendar.MINUTE,m);
-            cal.set(Calendar.SECOND,0);
-        }
-        else {
-            cal.add(Calendar.DATE,1);
-            cal.set(Calendar.HOUR_OF_DAY,h);
-            cal.set(Calendar.MINUTE,m);
-            cal.set(Calendar.SECOND,0);
-        }
+//        if(cal.get(Calendar.HOUR_OF_DAY) < h || cal.get(Calendar.HOUR_OF_DAY) == h && cal.get(Calendar.MINUTE) < m) {
+//            cal.set(Calendar.HOUR_OF_DAY,h);
+//            cal.set(Calendar.MINUTE,m);
+//            cal.set(Calendar.SECOND,0);
+//        }
+//        else {
+//            cal.add(Calendar.DATE,1);
+//            cal.set(Calendar.HOUR_OF_DAY,h);
+//            cal.set(Calendar.MINUTE,m);
+//            cal.set(Calendar.SECOND,0);
+//        }
+        cal.add(Calendar.SECOND,15);
         return cal.getTimeInMillis();
 
     }
